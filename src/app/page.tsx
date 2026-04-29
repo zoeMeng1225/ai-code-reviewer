@@ -31,6 +31,24 @@ export default function Home() {
     <div className={cn("flex flex-col h-screen bg-zinc-950 text-zinc-100")}>
       <Header onLoadHistory={handleLoadHistory} />
       <main className={cn("flex-1 min-h-0 flex flex-col lg:flex-row")}> </main>
+      <footer
+        className={cn(
+          "border-t border-zinc-800 px-4 py-2 flex items-center justify-between text-[11px] text-zinc-600",
+        )}
+      >
+        <span>Built with Next.js, TypeScript & GPT-4o</span>
+        <div className={cn("flex items-center gap-3")}>
+          <span>{code.length > 0 && `${code.length} chars`}</span>
+          <span className="flex items-center gap-1">
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                isStreaming ? "bg-cyan-400 animate-pulse" : "bg-emerald-500"
+              }`}
+            />
+            {isStreaming ? "Streaming" : "Ready"}
+          </span>
+        </div>
+      </footer>
     </div>
   );
 }
