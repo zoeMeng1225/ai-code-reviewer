@@ -7,6 +7,7 @@ import { SupportedLanguage } from "@/types/reviews";
 import { ReviewMode } from "@/types/reviews";
 import { useReview } from "@/hooks/useReview";
 import { ReviewHistoryItem } from "@/types/reviews";
+import CodeEditor from "@/components/CodeEditor";
 
 export default function Home() {
   const [code, setCode] = useState("");
@@ -36,7 +37,18 @@ export default function Home() {
           className={cn(
             "flex-1 min-h-0 lg:min-w-0 border-b lg:border-b-0 lg:border-r border-zinc-800 flex flex-col",
           )}
-        ></div>
+        >
+          <CodeEditor
+            code={code}
+            language={language}
+            mode={mode}
+            isStreaming={isStreaming}
+            onCodeChange={setCode}
+            onLanguageChange={setLanguage}
+            onModeChange={setMode}
+            onSubmit={handleSubmit}
+          />
+        </div>
       </main>
       <footer
         className={cn(
