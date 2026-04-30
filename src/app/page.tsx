@@ -49,6 +49,9 @@ export default function Home() {
             onSubmit={handleSubmit}
           />
         </div>
+
+        {/*review panel*/}
+        <div className={cn("flex-1 min-h-0 lg:min-w-0 flex flex-col")}></div>
       </main>
       <footer
         className={cn(
