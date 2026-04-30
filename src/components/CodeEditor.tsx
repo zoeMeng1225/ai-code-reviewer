@@ -18,9 +18,8 @@ const MonacoEditor = dynamic(() => import("@monaco-editor/react"), {
           className={cn(
             "w-4 h-4 border-2 border-zinc-600 border-t-cyan-400 rounded-full animate-spin",
           )}
-        >
-          Loading editor...
-        </div>
+        />
+        Loading editor...
       </div>
     </div>
   ),
@@ -71,6 +70,7 @@ export default function CodeEditor({
     }
   };
 
+  const [editorReady, setEditorReady] = useState(false);
   return (
     <div className={cn("flex flex-col h-full")} onKeyDown={handKeyDown}>
       <div
@@ -165,7 +165,7 @@ export default function CodeEditor({
 
       {/*monaco editor*/}
       <div className={cn("flex-1 min-h-0 relative")}>
-        {!code && (
+        {!code && editorReady && (
           <div
             className={cn(
               "absolute inset-0 z-10 pointer-events-none flex items-center justify-center",
@@ -213,6 +213,7 @@ export default function CodeEditor({
           value={code}
           onChange={(value) => onCodeChange(value || "")}
           theme="vs-dark"
+          onMount={() => setEditorReady(true)}
           beforeMount={(monaco) => {
             monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions(
               {
