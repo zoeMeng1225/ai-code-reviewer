@@ -8,14 +8,14 @@ interface SampleCode {
 
 export const SAMPLE_CODES: SampleCode[] = [
   {
-    label: "React Hook(Bug)",
+    label: "React Hook (Bug)",
     language: "typescript",
     code: `import { useState, useEffect } from 'react';
- 
+
 function useUserData(userId: string) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
- 
+
   useEffect(() => {
     setLoading(true);
     fetch(\`/api/users/\${userId}\`)
@@ -25,15 +25,15 @@ function useUserData(userId: string) {
         setLoading(false);
       });
   }, []);
- 
+
   return { user, loading };
 }
- 
+
 function UserProfile({ userId }) {
   const { user, loading } = useUserData(userId);
- 
+
   if (loading) return <div>Loading...</div>;
- 
+
   return (
     <div>
       <h1>{user.name}</h1>
@@ -44,21 +44,21 @@ function UserProfile({ userId }) {
 }`,
   },
   {
-    label: "Express API(Security)",
+    label: "Express API (Security)",
     language: "javascript",
     code: `const express = require('express');
 const mysql = require('mysql');
 const app = express();
- 
+
 app.use(express.json());
- 
+
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'password123',
   database: 'myapp'
 });
- 
+
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
   const query = \`SELECT * FROM users WHERE username = '\${username}' AND password = '\${password}'\`;
@@ -71,20 +71,20 @@ app.post('/login', (req, res) => {
     }
   });
 });
- 
+
 app.get('/users/:id', (req, res) => {
   db.query(\`SELECT * FROM users WHERE id = \${req.params.id}\`, (err, results) => {
     res.json(results[0]);
   });
 });
- 
+
 app.listen(3000);`,
   },
   {
     label: "Python Data Processing",
     language: "python",
     code: `import json
- 
+
 def process_users(filename):
     file = open(filename, 'r')
     data = json.loads(file.read())
@@ -109,13 +109,13 @@ def process_users(filename):
     output.close()
     
     return result
- 
+
 def find_user(users, name):
     for user in users:
         if user['name'] == name:
             return user
     return None
- 
+
 users = process_users('users.json')
 print(f"Processed {len(users)} users")`,
   },
