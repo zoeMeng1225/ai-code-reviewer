@@ -3,10 +3,13 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import { cn } from "@/lib/utils";
-import { SupportedLanguage } from "@/types/reviews";
-import { ReviewMode } from "@/types/reviews";
+import {
+  SupportedLanguage,
+  ReviewHistoryItem,
+  ReviewMode,
+} from "@/types/reviews";
 import { useReview } from "@/hooks/useReview";
-import { ReviewHistoryItem } from "@/types/reviews";
+
 import CodeEditor from "@/components/CodeEditor";
 import ReviewPanel from "@/components/ReviewPanel";
 

@@ -21,7 +21,7 @@ export default function Header({ onLoadHistory }: HeaderProps) {
     >
       <div
         className={cn(
-          "max-w-[1600px] mx-auto px-4 sm:px-6 h-14 flex items-center justify-between",
+          "mx-auto px-4 sm:px-6 h-14 flex items-center justify-between",
         )}
       >
         <div className={cn("flex items-center gap-2.5")}>

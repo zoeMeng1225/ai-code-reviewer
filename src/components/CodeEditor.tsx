@@ -164,13 +164,69 @@ export default function CodeEditor({
       </div>
 
       {/*monaco editor*/}
-      <div className={cn("flex-1 min-h-0")}>
+      <div className={cn("flex-1 min-h-0 relative")}>
+        {!code && (
+          <div
+            className={cn(
+              "absolute inset-0 z-10 pointer-events-none flex items-center justify-center",
+            )}
+          >
+            <div className={cn("text-center max-w-md px-6")}>
+              <p className={cn("text-zinc-500 text-sm mb-4")}>
+                Paste your code here, or click{" "}
+                <span className="text-cyan-400">Load example</span> to try a
+                demo
+              </p>
+              <div className={cn("text-zinc-600 text-xs space-y-1.5")}>
+                <p>
+                  <span className={cn("text-zinc-600 text-xs space-y-1.5")}>
+                    Language
+                  </span>{" "}
+                  — sets syntax highlighting and tells AI what language to
+                  review
+                </p>
+                <p>
+                  <span className={cn("text-zinc-600 text-xs space-y-1.5")}>
+                    ⚡ Quick
+                  </span>{" "}
+                  — fast scan, top 3-5 issues only
+                </p>
+                <p>
+                  <span className={cn("text-zinc-600 text-xs space-y-1.5")}>
+                    🔍 Deep
+                  </span>{" "}
+                  — thorough analysis with refactoring suggestions
+                </p>
+                <p>
+                  <span className={cn("text-zinc-600 text-xs space-y-1.5")}>
+                    🛡️ Security
+                  </span>{" "}
+                  — focused on vulnerabilities (XSS, injection, auth)
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
         <MonacoEditor
           height="100%"
           language={language}
           value={code}
           onChange={(value) => onCodeChange(value || "")}
           theme="vs-dark"
+          beforeMount={(monaco) => {
+            monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions(
+              {
+                noSemanticValidation: true,
+                noSyntaxValidation: true,
+              },
+            );
+            monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions(
+              {
+                noSemanticValidation: true,
+                noSyntaxValidation: true,
+              },
+            );
+          }}
           options={{
             minimap: { enabled: false },
             fontSize: 13,

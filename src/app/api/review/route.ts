@@ -7,10 +7,10 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-//simple in-memory rate limiting
+// simple in-memory rate limiting
 const requestCounts = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT = 10; //request pre window
-const RATE_WINDOW = 60 * 60 * 1000;
+const RATE_LIMIT = 10; // requests per window
+const RATE_WINDOW = 60 * 60 * 1000; // 1 hour
 
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
@@ -24,19 +24,18 @@ function checkRateLimit(ip: string): boolean {
   if (record.count >= RATE_LIMIT) {
     return false;
   }
+
   record.count++;
   return true;
 }
 
 export async function POST(req: NextRequest) {
   try {
-    //rate limit
+    // rate limiting
     const ip = req.headers.get("x-forwarded-for") || "unknown";
     if (!checkRateLimit(ip)) {
       return NextResponse.json(
-        {
-          error: "Rate limit exceeded. Please try again later",
-        },
+        { error: "Rate limit exceeded. Please try again later." },
         { status: 429 },
       );
     }
@@ -48,36 +47,36 @@ export async function POST(req: NextRequest) {
       mode: ReviewMode;
     };
 
-    //validation
+    // validation
     if (!code || !code.trim()) {
-      return NextRequest.json(
-        {
-          error: "Code is required",
-        },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: "Code is required." }, { status: 400 });
     }
+
     if (code.length > 15000) {
       return NextResponse.json(
-        {
-          error: "Code exceeds maximum length of 15,000 characters.",
-        },
+        { error: "Code exceeds maximum length of 15,000 characters." },
         { status: 400 },
       );
     }
 
+    const maxTokensMap: Record<ReviewMode, number> = {
+      quick: 1000,
+      deep: 2000,
+      security: 1500,
+    };
+
     const stream = await openai.chat.completions.create({
-      model: "gpt-4o",
+      model: "gpt-4o-mini",
       messages: [
         { role: "system", content: getSystemPrompt(mode) },
         { role: "user", content: buildUserPrompt(code, language) },
       ],
       stream: true,
       temperature: 0.3,
-      max_tokens: 2000,
+      max_tokens: maxTokensMap[mode],
     });
 
-    //convert openai stream to readableStream
+    // convert OpenAI stream to ReadableStream
     const encoder = new TextEncoder();
     const readable = new ReadableStream({
       async start(controller) {
@@ -104,6 +103,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     console.error("Review API error:", error);
+
     if (error instanceof OpenAI.APIError) {
       if (error.status === 429) {
         return NextResponse.json(
