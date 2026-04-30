@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Code Reviewer
+
+An open-source, AI-powered code review tool that provides instant, structured feedback on your code. Paste your code, select a review mode, and get actionable insights — powered by GPT-4o with real-time streaming.
+
+🔗 **Live Demo**: [https://aireviewer.zoemeng.com/](https://aireviewer.zoemeng.com/)
+
+![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
+![GPT-4o](https://img.shields.io/badge/GPT--4o-powered-10A37F?logo=openai&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-blue)
+
+- **Real-time Streaming** — Watch the AI review appear token-by-token as it's generated
+- **Three Review Modes** — Quick scan, deep analysis, or security audit
+- **Monaco Editor** — VS Code's editor with syntax highlighting for 8+ languages
+- **Structured Feedback** — Issues categorized by severity (Critical / Warning / Info) with line references
+- **Code Score** — 0–100 quality score with visual indicator
+- **Export** — Copy as markdown or download `.md` file for PR comments
+- **Review History** — Automatically saves recent reviews with one-click reload
+- **Keyboard Shortcuts** — `⌘ + Enter` to submit
+- **Responsive** — Works on desktop and mobile
+
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript (strict mode)
+- **Editor**: Monaco Editor (`@monaco-editor/react`)
+- **AI**: OpenAI GPT-4o-mini (streaming)
+- **State**: Zustand (with localStorage persistence)
+- **Styling**: Tailwind CSS
+- **Deployment**: Vercel
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- An [OpenAI API key](https://platform.openai.com/api-keys)
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/zoeMeng1225/ai-code-reviewer.git
+cd ai-code-reviewer
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env.local
+# Edit .env.local and add your OpenAI API key
+
+# Start the dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to use the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/
+│   ├── page.tsx                # Main page — split-pane layout
+│   ├── layout.tsx              # Root layout, fonts, metadata
+│   ├── globals.css             # Global styles
+│   └── api/review/
+│       └── route.ts            # POST endpoint — OpenAI streaming
+├── components/
+│   ├── CodeEditor.tsx          # Monaco wrapper + toolbar
+│   ├── ReviewPanel.tsx         # Streaming result display + markdown renderer
+│   └── Header.tsx              # App header + history dropdown
+├── hooks/
+│   └── useReview.ts            # Core hook — fetch, stream, abort, error handling
+├── stores/
+│   └── reviewStore.ts          # Zustand store — review history persistence
+├── lib/
+│   ├── prompts.ts              # System prompts for each review mode
+│   ├── sampleCodes.ts          # Demo code snippets
+│   └── exportMarkdown.ts       # Copy + download utilities
+└── types/
+    └── review.ts               # Shared TypeScript types
+```
 
-## Learn More
+## Architecture Decisions
 
-To learn more about Next.js, take a look at the following resources:
+| Decision                                          | Rationale                                                                     |
+| ------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Raw `ReadableStream` over Vercel AI SDK streaming | More explicit control over stream consumption; easier to debug and understand |
+| Zustand over Redux                                | Minimal boilerplate for a small state surface (history only)                  |
+| Custom markdown renderer over `react-markdown`    | Zero extra dependencies; tailored to the specific review output format        |
+| In-memory rate limiting                           | Simple demo protection without external dependencies                          |
+| Monaco dynamic import                             | Prevents 2MB+ bundle from blocking initial page load                          |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+[MIT](LICENSE)
 
-## Deploy on Vercel
+## Author
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Zoe Meng** — Frontend Engineer
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Portfolio: [zoemeng.com](https://zoemeng.com)
+- GitHub: [@zoeMeng1225](https://github.com/zoeMeng1225)
+- Linkedin: [Zoe Meng](https://www.linkedin.com/in/zoe-meng/)
