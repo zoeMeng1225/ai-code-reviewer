@@ -8,6 +8,7 @@ import { ReviewMode } from "@/types/reviews";
 import { useReview } from "@/hooks/useReview";
 import { ReviewHistoryItem } from "@/types/reviews";
 import CodeEditor from "@/components/CodeEditor";
+import ReviewPanel from "@/components/ReviewPanel";
 
 export default function Home() {
   const [code, setCode] = useState("");
@@ -51,7 +52,15 @@ export default function Home() {
         </div>
 
         {/*review panel*/}
-        <div className={cn("flex-1 min-h-0 lg:min-w-0 flex flex-col")}></div>
+        <div className={cn("flex-1 min-h-0 lg:min-w-0 flex flex-col")}>
+          <ReviewPanel
+            result={result}
+            isStreaming={isStreaming}
+            error={error}
+            language={language}
+            mode={mode}
+          />
+        </div>
       </main>
       <footer
         className={cn(
