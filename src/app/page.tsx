@@ -70,7 +70,7 @@ export default function Home() {
           "border-t border-zinc-800 px-4 py-2 flex items-center justify-between text-[11px] text-zinc-600",
         )}
       >
-        <span>Built with Next.js, TypeScript & GPT-4o</span>
+        <span>Built with Next.js, TypeScript & GPT-4o-mini</span>
         <div className={cn("flex items-center gap-3")}>
           <span>{code.length > 0 && `${code.length} chars`}</span>
           <span className="flex items-center gap-1">

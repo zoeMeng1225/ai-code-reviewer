@@ -59,7 +59,7 @@ export default function Header({ onLoadHistory }: HeaderProps) {
               "hidden sm:inline text-[10px] font-medium px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20",
             )}
           >
-            GPT-4o
+            GPT-4o-mini
           </span>
         </div>
         {/*action*/}
